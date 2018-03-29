@@ -43,6 +43,8 @@
 
 				<a class="navbar-brand js-scroll-trigger" href="/prospect/index.php"><strong><font color="#041040">&nbsp Prospects</font></strong></a>
 				
+				<?php if(isset($_SESSION["IdVendedor"])){ ?>
+
 				<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 					Menu
 					<i class="fa fa-bars"></i>
@@ -55,11 +57,17 @@
 						</li> 
 
 						<li class="nav-item">
-							<a class="nav-link js-scroll-trigger" href="/prospect/clientes/index.php"><font color="#041040">Relatórios</font></a>
+							<a class="nav-link js-scroll-trigger" href="/prospect/relatorios/index.php"><font color="#041040">Relatórios</font></a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link js-scroll-trigger" href="/prospect/controller/LoginController.php?acao=logout"><font color="#041040">Sair</font></a>
 						</li>
 
 					</ul>
 				</div> 
+
+				<?php } ?>
 		
 		</div>
 	</nav>

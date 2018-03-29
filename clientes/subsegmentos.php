@@ -10,7 +10,7 @@ $prospectModel = new ProspectModel();
 
 	foreach($subsegmentos as $sb): 
 
-		if($segmento == $sb["IdSubSegmento"]){	?>
+		if($subsegmento == $sb["IdSubSegmento"]){	?>
 
 		<option selected value="<?= $sb["IdSubSegmento"]?>"> <?= $sb["DescricaoSubSegmento"]?>  </option>
 

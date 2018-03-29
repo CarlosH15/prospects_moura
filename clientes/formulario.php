@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 require_once $_SERVER["DOCUMENT_ROOT"] . "/prospect/model/ProspectModel.php";
 $prospectModel = new ProspectModel();
 $segmentos = $prospectModel->listarSegmentos();
@@ -35,6 +36,12 @@ if(isset($_GET["cnpjPesquisa"])){
 
 	$pModel = new ProspectModel();
 	$prospect = $pModel->consultarProspectUnicoPorCNPJ($cnpjAPesquisar);
+
+	if($prospect == false){
+		echo "<script type='text/javascript'> alert('Não encontrado'); </script>";
+		echo "<script>location.href = '../clientes/index.php';</script>";
+		exit();
+	}
 
 	$cnpj = $prospect["CNPJ"];
 	$nomeFantasia = $prospect["NomeFantasia"];
@@ -113,249 +120,253 @@ if(isset($_GET["cnpjPesquisa"])){
 		<div class="col-sm-4">
 			<select id="segmento" name="segmento" class="form-control" required>
 				<option disabled selected="">Selecione o segmento...</option>                
-			<?php 
+				<?php 
 
-			foreach($segmentos as $sg): 
+				foreach($segmentos as $sg): 
 
-			if($segmento == $sg["CodSegmento"]){	?>
-			
-			<option selected value="<?= $sg["CodSegmento"]?>"> <?= $sg["DescricaoSegmento"]?>  </option>
+					if($segmento == $sg["CodSegmento"]){	?>
 
-			<?php }else{ ?>
+					<option selected value="<?= $sg["CodSegmento"]?>"> <?= $sg["DescricaoSegmento"]?>  </option>
 
-			<option value="<?= $sg["CodSegmento"]?>"> <?= $sg["DescricaoSegmento"]?>  </option>
+					<?php }else{ ?>
 
-		<?php } endforeach; ?>
+					<option value="<?= $sg["CodSegmento"]?>"> <?= $sg["DescricaoSegmento"]?>  </option>
 
-	</select>
-	</div>
+					<?php } endforeach; ?>
 
-	<div class="col-sm-4" id="subsegmento"></div>
-</div>
+				</select>
+			</div>
 
-<div class="row">
-	<div class="col-sm-8">
-		<br><b><font size="4px"> Logradouro: </font></b>
-	</div>
-</div>
+			<div class="col-sm-4" id="subsegmento"></div>
+		</div>
 
-<div class="row">
-	<div class="col-sm-8">
-		<input class="form-control" class="fonte" type="text" placeholder="Logradouro" name="logradouro" autocomplete="off" required maxlength="150" value="<?=$logradouro?>">
-	</div>
-</div>
+		<div class="row">
+			<div class="col-sm-8">
+				<br><b><font size="4px"> Logradouro: </font></b>
+			</div>
+		</div>
 
-<div class="row">
-	<div class="col-sm-4">
-		<br><b><font size="4px"> Bairro: </font></b>
-	</div>
+		<div class="row">
+			<div class="col-sm-8">
+				<input class="form-control" class="fonte" type="text" placeholder="Logradouro" name="logradouro" autocomplete="off" required maxlength="150" value="<?=$logradouro?>">
+			</div>
+		</div>
 
-	<div class="col-sm-4">
-		<br><b><font size="4px"> Número: </font></b>
-	</div>
-</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<br><b><font size="4px"> Bairro: </font></b>
+			</div>
 
-<div class="row">
-	<div class="col-sm-4">
-		<input class="form-control" class="fonte" type="text" placeholder="Bairro" id="bairro" name="bairro" autocomplete="off" required maxlength="40" value="<?=$bairro?>">
-	</div>
+			<div class="col-sm-4">
+				<br><b><font size="4px"> Número: </font></b>
+			</div>
+		</div>
 
-	<div class="col-sm-4">
-		<input class="form-control" class="fonte" type="text" placeholder="Número" id="numero" name="numero" autocomplete="off" maxlength="10" value="<?=$numero?>">
-	</div>
-</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<input class="form-control" class="fonte" type="text" placeholder="Bairro" id="bairro" name="bairro" autocomplete="off" required maxlength="40" value="<?=$bairro?>">
+			</div>
 
-<div class="row">
-	<div class="col-sm-3">
-		<br><b><font size="4px"> Cidade: </font></b>
-	</div>
+			<div class="col-sm-4">
+				<input class="form-control" class="fonte" type="text" placeholder="Número" id="numero" name="numero" autocomplete="off" maxlength="10" value="<?=$numero?>">
+			</div>
+		</div>
 
-	<div class="col-sm-5">
-		<br><b><font size="4px"> CNAE: </font></b>
-	</div>
-</div>
+		<div class="row">
+			<div class="col-sm-3">
+				<br><b><font size="4px"> Cidade: </font></b>
+			</div>
 
-<div class="row">
-	<div class="col-sm-3">
-		<select id="cidade" name="cidade" class="form-control" required>
-			<option disabled selected="">Selecione a cidade...</option>                
-			<?php 
+			<div class="col-sm-5">
+				<br><b><font size="4px"> CNAE: </font></b>
+			</div>
+		</div>
 
-			foreach($cidades as $c): 
+		<div class="row">
+			<div class="col-sm-3">
+				<select id="cidade" name="cidade" class="form-control" required>
+					<option disabled selected="">Selecione a cidade...</option>                
+					<?php 
 
-			if($cidade == $c["IdCidade"]){	?>
-			
-			<option selected value="<?= $c["IdCidade"]?>"> <?= $c["NomeCidade"]?>  </option>
+					foreach($cidades as $c): 
 
-			<?php }else{ ?>
+						if($cidade == $c["IdCidade"]){	?>
 
-			<option value="<?= $c["IdCidade"]?>"> <?= $c["NomeCidade"]?>  </option>
+						<option selected value="<?= $c["IdCidade"]?>"> <?= $c["NomeCidade"]?>  </option>
 
-		<?php } endforeach; ?>
+						<?php }else{ ?>
 
-	</select>
-</div>
+						<option value="<?= $c["IdCidade"]?>"> <?= $c["NomeCidade"]?>  </option>
 
-<div class="col-sm-5">
-	<select id="cnae" name="cnae" class="form-control" required>
-		<option disabled selected="">Selecione o CNAE...</option>                
-			<?php 
+						<?php } endforeach; ?>
 
-			foreach($cnaes as $cn): 
+					</select>
+				</div>
 
-			if($cnae == $cn["IdCNAE"]){	?>
-			
-			<option selected value="<?= $cn["IdCNAE"]?>"> <?= $cn["DescricaoCNAE"]?>  </option>
+				<div class="col-sm-5">
+					<select id="cnae" name="cnae" class="form-control" required>
+						<option disabled selected="">Selecione o CNAE...</option>                
+						<?php 
 
-			<?php }else{ ?>
+						foreach($cnaes as $cn): 
 
-			<option value="<?= $cn["IdCNAE"]?>"> <?= $cn["DescricaoCNAE"]?>  </option>
+							if($cnae == $cn["IdCNAE"]){	?>
 
-		<?php } endforeach; ?>
+							<option selected value="<?= $cn["IdCNAE"]?>"> <?= $cn["DescricaoCNAE"]?>  </option>
 
-	</select>
-</div>
-</div>
+							<?php }else{ ?>
 
-<div class="row">
-	<div class="col-sm-8">
-		<br><b><font size="4px"> Email: </font></b>
-	</div>
-</div>
+							<option value="<?= $cn["IdCNAE"]?>"> <?= $cn["DescricaoCNAE"]?>  </option>
 
-<div class="row">
-	<div class="col-sm-8">
-		<input class="form-control" class="fonte" type="email" placeholder="Email" name="email" autocomplete="off" maxlength="150" value="<?=$email?>">
-	</div>
-</div>
+							<?php } endforeach; ?>
 
-<div class="row">
-	<div class="col-sm-4">
-		<br><b><font size="4px"> Responsável: </font></b>
-	</div>
+						</select>
+					</div>
+				</div>
 
-	<div class="col-sm-4">
-		<br><b><font size="4px"> Cliente vende baterias? </font></b>
-	</div>
-</div>
+				<div class="row">
+					<div class="col-sm-8">
+						<br><b><font size="4px"> Email: </font></b>
+					</div>
+				</div>
 
-<div class="row">
-	<div class="col-sm-4">
-		<select id="responsavel" name="responsavel" class="form-control" required>
-			<option disabled selected="">Selecione o responsável...</option>                
-			<?php 
+				<div class="row">
+					<div class="col-sm-8">
+						<input class="form-control" class="fonte" type="email" placeholder="Email" name="email" autocomplete="off" maxlength="150" value="<?=$email?>">
+					</div>
+				</div>
 
-			foreach($responsaveis as $r): 
+				<div class="row">
+					<div class="col-sm-4">
+						<br><b><font size="4px"> Responsável: </font></b>
+					</div>
 
-			if($responsavel == $r["IdVendedor"]){	?>
-			
-			<option selected value="<?= $r["IdVendedor"]?>"> <?= $r["NomeVendedor"]?>  </option>
+					<div class="col-sm-4">
+						<br><b><font size="4px"> Cliente vende baterias? </font></b>
+					</div>
+				</div>
 
-			<?php }else{ ?>
+				<div class="row">
+					<div class="col-sm-4">
+						<select id="responsavel" name="responsavel" class="form-control" required>
+							<option disabled selected="">Selecione o responsável...</option>                
+							<?php 
 
-			<option value="<?= $r["IdVendedor"]?>"> <?= $r["NomeVendedor"]?>  </option>
+							foreach($responsaveis as $r): 
 
-		<?php } endforeach; ?>
+								if($responsavel == $r["IdVendedor"]){	?>
 
-	</select>
-</div>
+								<option selected value="<?= $r["IdVendedor"]?>"> <?= $r["NomeVendedor"]?>  </option>
 
-<div class="col-sm-4">
-	<select id="resposta" name="resposta" class="form-control">
-		<option disabled selected="">Resposta...</option>
-		<option value="S">Sim</option>
-		<option value="N">Não</option>
-	</select>
-</div>
-</div>
+								<?php }else{ ?>
 
-<div class="row">
-	<div class="col-sm-4">
-		<br><b><font size="4px"> Status da visita: </font></b>
-	</div>
+								<option value="<?= $r["IdVendedor"]?>"> <?= $r["NomeVendedor"]?>  </option>
 
-	<div class="col-sm-4">
-		<br><b><font size="4px"> Quantidade de vezes que o cliente foi contactado: </font></b>
-	</div>
-</div>
+								<?php } endforeach; ?>
+
+							</select>
+						</div>
+
+						<div class="col-sm-4">
+							<select id="resposta" name="resposta" class="form-control">
+								<option disabled selected="">Resposta...</option>
+								
+								<?php if($resposta == "S"){ ?>
+								
+								<option selected value="S">Sim</option>
+								<option value="N">Não</option>
+
+								<?php } else if($resposta == "N"){ ?>
+								
+								<option value="S">Sim</option>
+								<option selected value="N">Não</option>
+
+								<?php } ?>
+							</select>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-4">
+							<br><b><font size="4px"> Status da visita: </font></b>
+						</div>
+
+						<div class="col-sm-4">
+							<br><b><font size="4px"> Quantidade de vezes que o cliente foi contactado: </font></b>
+						</div>
+					</div>
 
 
-<div class="row">
-	<div class="col-sm-4">
-		<select id="statusvisita" name="statusvisita" class="form-control">
-			<option disabled selected="">Selecione o status da visita...</option>                
-			<?php 
+					<div class="row">
+						<div class="col-sm-4">
+							<select id="statusvisita" name="statusvisita" class="form-control">
+								<option disabled selected="">Selecione o status da visita...</option>                
+								<?php 
 
-			foreach($status as $st): 
+								foreach($status as $st): 
 
-			if($statusvisita == $st["IdStatusVisita"]){	?>
-			
-			<option selected value="<?= $st["IdStatusVisita"]?>"> <?= $st["DescricaoVisita"]?>  </option>
+									if($statusvisita == $st["IdStatusVisita"]){	?>
 
-			<?php }else{ ?>
+									<option selected value="<?= $st["IdStatusVisita"]?>"> <?= $st["DescricaoVisita"]?>  </option>
 
-			<option value="<?= $st["IdStatusVisita"]?>"> <?= $st["DescricaoVisita"]?>  </option>
+									<?php }else{ ?>
 
-		<?php } endforeach; ?>
+									<option value="<?= $st["IdStatusVisita"]?>"> <?= $st["DescricaoVisita"]?>  </option>
 
-	</select>
-</div>
+									<?php } endforeach; ?>
 
-<div class="col-sm-4">
-	<select id="quantidadeContatos" name="quantidadeContatos" class="form-control">
-		<option disabled selected="">Selecione...</option>
-		<option value="0">0</option>
-		<option value="1">1</option>
-		<option value="2">2</option>
-		<option value="3">3</option>
-		<option value="4">4</option>
-		<option value="5">5</option>
-		<option value="6">6</option>
-	</select>
-</div>
-</div>
+								</select>
+							</div>
 
-<div class="row">
-	<div class="col-sm-8">
-		<br><b><font size="4px"> Observação: </font></b>
-	</div>
-</div>
+							
+							<div class="col-sm-4">
+								<input class="form-control" class="fonte" type="number" placeholder="Quantidade de contatos" id="quantidadeContatos" name="quantidadeContatos" maxlength="2" value="<?=$quantidadeContatos?>">
+							</div>
+							
+						</div>
 
-<div class="row">
-	<div class="col-sm-8">
-		<input class="form-control" class="fonte" type="text" placeholder="Digite aqui sua observação sobre esse prospect..." name="observacao" autocomplete="off" maxlength="300" value="<?=$observacao?>">
-	</div>
-</div>
+						<div class="row">
+							<div class="col-sm-8">
+								<br><b><font size="4px"> Observação: </font></b>
+							</div>
+						</div>
 
-<br>
+						<div class="row">
+							<div class="col-sm-8">
+								<input class="form-control" class="fonte" type="text" placeholder="Digite aqui sua observação sobre esse prospect..." name="observacao" autocomplete="off" maxlength="300" value="<?=$observacao?>">
+							</div>
+						</div>
 
-<div class="row">
-	<div class="col-sm-4">					
-		<input class="btn btn-default btn-lg" class="fonte" type="submit"></button>
-	</div>
-</div>
-</form>
-</div>
+						<br>
 
-<?php
+						<div class="row">
+							<div class="col-sm-4">					
+								<input class="btn btn-default btn-lg" class="fonte" type="submit"></button>
+							</div>
+						</div>
+					</form>
+				</div>
 
-echo "<script type='text/javascript'>
-$('select#segmento').change(function(){					
-	$('#subsegmento').load('subsegmentos.php?segmento='+$('#segmento').val());
-})
+				<?php
 
-jQuery(function($){
-	$('#cnpjPesquisa').mask('99.999.999/9999-99');
-});
+				echo "<script type='text/javascript'>
 
-jQuery(function($){
-	$('#cnpj').mask('99.999.999/9999-99');
-});
+				$('select#segmento').click(function(){		
+					$('#subsegmento').load('subsegmentos.php?segmento='+$('#segmento').val());
+				});
 
-$('button#btnConsultar').click(function(){
-	$('#formulario').load('formulario.php?cnpjPesquisa='+$('#cnpjPesquisa').val());
-})
+				jQuery(function($){
+					$('#cnpjPesquisa').mask('99.999.999/9999-99');
+				});
 
-</script>";
+				jQuery(function($){
+					$('#cnpj').mask('99.999.999/9999-99');
+				});
 
-?>
+				$('button#btnConsultar').click(function(){
+					$('#formulario').load('formulario.php?cnpjPesquisa='+$('#cnpjPesquisa').val());
+				});
+
+				</script>";
+
+				?>
